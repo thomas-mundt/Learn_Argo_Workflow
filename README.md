@@ -44,7 +44,7 @@ vi examples/hello-world.yaml
 apiVersion: argoproj.io/v1alpha1
 kind: Workflow
 metadata:
-  generateName: hello-world-
+  generateName: hello-world-   # Name of this Workflow
   labels:
     workflows.argoproj.io/archive-strategy: "false"
   annotations:
@@ -52,7 +52,7 @@ metadata:
       This is a simple hello world example.
       You can also run it in Python: https://couler-proj.github.io/couler/examples/#hello-world
 spec:
-  entrypoint: whalesay
+  entrypoint: whalesay.   # Defining "whalesay" as the "main" template
   templates:
   - name: whalesay
     container:
