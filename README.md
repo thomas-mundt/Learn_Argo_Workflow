@@ -144,3 +144,39 @@ k -n argo create -f wf-resource-template.yaml
 ```
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Write logs to MinIO
+
+```
+k -n argo port-forward minio 9000:9000
+
+#or like
+k -n argo port-forward minio-58977b4b48-ds7s7 9000:9000
+
+```
+
+
+```
+localhost:9000
+
+admin
+password
+```
+
+
