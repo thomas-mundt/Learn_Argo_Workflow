@@ -62,5 +62,25 @@ spec:
 ```
 
 
+## Container Template
+
+vi wf-container-template.yaml
+```
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: wf-container-template-
+spec:
+  entrypoint: container-template
+  templates:
+  - name: container-template
+    container:
+      image: python:3.8-slim
+      command: [echo, "The container template was executed successfully."]
+```
+
+```
+k -n argo create -f wf-container-template.yaml
+```
 
 
