@@ -107,3 +107,40 @@ spec:
 ```
 k -n argo create -f wf-script-template.yaml
 ```
+
+
+## Resource Template
+
+vi wf-resource-template.yaml
+```
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: wf-resource-template-
+spec:
+  entrypoint: resource-template
+  templates:
+  - name: resource-template
+    resource:
+      action: create
+      manifest: |
+        apiVersion: argoproj.io/v1alpha1
+        kind: Workflow
+        metadata:
+          name: wf-test
+        spec:
+          entrypoint: test-template
+          templates:
+          - name: test-template
+            script:
+              image: python:3.8-slim
+              command: [python]
+              source: |
+                print("Workflow wf-test created with resource template.")
+```
+
+```
+k -n argo create -f wf-resource-template.yaml
+```
+
+
