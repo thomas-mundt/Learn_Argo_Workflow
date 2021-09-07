@@ -180,3 +180,43 @@ password
 ```
 
 
+## Configuration
+
+```
+k describe cm -n argo workflow-controller-configmap
+```
+
+
+```
+Data
+====
+artifactRepository:
+----
+s3:
+  bucket: my-bucket
+  endpoint: minio:9000
+  insecure: true
+  accessKeySecret:
+    name: my-minio-cred
+    key: accesskey
+  secretKeySecret:
+    name: my-minio-cred
+    key: secretkey
+...
+
+AND MORE
+```
+
+
+
+
+## ARGOCLI
+
+```
+#https://argoproj.github.io/argo-cd/cli_installation/
+
+brew install argocd
+
+argocd version
+```
+
