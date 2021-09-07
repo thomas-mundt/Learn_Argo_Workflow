@@ -26,3 +26,15 @@ k port-forward deployment/argo-server 2746:2746 -n argo
 https://localhost:2746
 ```
 
+
+
+## Create a workflow
+
+
+```
+git clone https://github.com/argoproj/argo-workflows.git
+cd argo-workflows
+
+k -n argo create -f examples/hello-world.yaml
+```
+
