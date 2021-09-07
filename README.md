@@ -84,3 +84,26 @@ k -n argo create -f wf-container-template.yaml
 ```
 
 
+
+## Script Template
+
+```
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: wf-script-template-
+spec:
+  entrypoint: script-template
+  templates:
+  - name: script-template
+    script:
+      image: python:3.8-slim
+      command: [python]
+      source: |
+        print("The script template was executed successfully.")
+```
+
+
+```
+k -n argo create -f wf-script-template.yaml
+```
