@@ -282,6 +282,72 @@ spec:
 ```
   
   
+```
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  name: wf-exercise1
+spec:
+  entrypoint: dag-template
+  templates:
+  - name: dag-template
+    dag:
+      tasks:
+      - name: Task1
+        template: taskA-template
+      - name: Task2
+        template: taskB-template
+        dependencies: [Task1]
+      - name: Task3
+        template: taskC-template
+        dependencies: [Task1]
+      - name: Task4
+        template: taskB-template
+        dependencies: [Task2]
+      - name: Task5
+        template: taskB-template
+        dependencies: [Task4]
+      - name: Task6
+        template: delay-template
+        dependencies: [Task3, Task5]
+      - name: Task7
+        template: taskA-template
+        dependencies: [Task6]
+  - name: taskA-template
+    script:
+      image: python:3.8-slim
+      command: [python]
+      source: |
+        print("Task A executed successfully")
+
+  - name: taskB-template
+    container:
+      image: python:3.8-slim
+      command: [echo, "Task B executes successfully"]
+
+  - name: taskC-template
+    resource:
+      action: create
+      manifest: |
+        apiVersion: argoproj.io/v1alpha1
+        kind: Workflow
+        metadata:
+          name: wf-resource-template
+        spec:
+          entrypoint: resource-template
+          template:
+          - name: resource-template
+            script:
+              image: python:3.8-slim
+              command: [pythom]
+              source: |
+                print("Task C executed successfully")
+  
+  - name: delay-template
+    suspend:
+      duration: "5s"
+  
+```
 
 
 
