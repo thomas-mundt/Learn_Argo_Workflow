@@ -208,9 +208,78 @@ spec:
 ```
 
 
+
+## Suspend Template
+  
+```
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  name: wf-suspend-steps-templates
+spec:
+  entrypoint: suspend-steps-templates
+  templates:
+  - name: suspend-steps-templates
+    steps:
+    - - name: step1
+        template: task-template
+    - - name: step2
+        template: task-template
+      - name: step3
+        template: task-template
+    - - name: delay
+        template: delay-template
+    - - name: step4
+        template: task-template
+    
+  - name: task-template
+    script:
+      image: python:3.8-slim
+      command: [python]
+      source: |
+        print("Task executed")
+  
+  - name: delay-template
+    suspend:
+      duration: "10s"
+```
   
   
   
+## Dag Template
+  
+```
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  name: wf-dag-template
+spec:
+  entrypoint: dag-template
+  templates:
+  - name: dag-template
+    dag:
+      tasks:
+      - name: Task1
+        template: task-template
+      - name: Task2
+        template: task-template
+        dependencies: [Task1]
+      - name: Task3
+        template: task-template
+        dependencies: [Task1]
+      - name: Task4
+        template: task-template
+        dependencies: [Task2, Task3]
+    
+  - name: task-template
+    script:
+      image: python:3.8-slim
+      command: [python]
+      source: |
+        print("Task executed")
+  
+  
+```
   
   
 
