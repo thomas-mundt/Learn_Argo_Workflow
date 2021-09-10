@@ -145,6 +145,111 @@ k -n argo create -f wf-resource-template.yaml
 
 
 
+## Steps Template Serial (Template Invocators)
+
+```
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  name: wf-steps-templates-serial
+spec:
+  entrypoint: steps-template-serial
+  templates:
+  - name: steps-template-serial
+    steps:
+    - - name: step1
+        template: task-template
+    - - name: step2
+        template: task-template
+    - - name: step3
+        template: task-template
+    
+  
+  - name: task-template
+    script:
+      image: python:3.8-slim
+      command: [python]
+      source: |
+        print("Task executed")
+    
+```
+k create -f <FILE> -n argo
+
+
+  
+## Steps Template Paralell
+
+```
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  name: wf-steps-templates-paralell
+spec:
+  entrypoint: steps-template-paralell
+  templates:
+  - name: steps-template-paralell
+    steps:
+    - - name: step1
+        template: task-template
+    - - name: step2
+        template: task-template
+      - name: step3
+        template: task-template
+    - - name: step4
+        template: task-template
+    
+  - name: task-template
+    script:
+      image: python:3.8-slim
+      command: [python]
+      source: |
+        print("Task executed")
+    
+```
+
+
+  
+  
+  
+  
+  
+
+
+
+
+## Input Parameters
+
+```
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  name: wf-dag-template
+spec:
+  entrypoint: dag-template
+  templates:
+  - name: dag-template
+    dag:
+     tasks:
+     - name: Task1
+       template: task-template
+     - name: Task2
+       template: task-template
+       dependencies: [Task1]
+     - name: Task3
+       template: task-template
+       dependencies: [Task1]
+     - name: Task4
+       template: task-template
+       dependencies: [Task2, Task3]
+   - name: task-template
+     script:
+       image: python:3.8-slim
+       command: [python]
+       source: |
+         print("Task executed.")
+       
+```
+
 
 
 
